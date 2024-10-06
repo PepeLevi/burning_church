@@ -250,7 +250,7 @@ function createNameTag(mesh) {
     const context = canvas.getContext('2d');
     
     // Set font and measure text
-    const fontSize = 10; // Smaller font size
+    const fontSize = 20; // Smaller font size
     context.font = `Bold ${fontSize}px Arial`;
     context.fillStyle = 'rgba(255,255,255,1)';
     const textWidth = context.measureText(name).width;
@@ -273,7 +273,9 @@ function createNameTag(mesh) {
     const sprite = new THREE.Sprite(spriteMaterial);
     
     // Set the scale of the sprite based on the canvas size
-    sprite.scale.set(canvas.width / 10, canvas.height / 10, 1); // Adjust the scale factor as needed
+    const scaleFactorX = 2;  // Factor to stretch the width
+    const scaleFactorY = 1;  // Keep the height the same
+    sprite.scale.set((canvas.width / 10) * scaleFactorX, (canvas.height / 10) * scaleFactorY, 1);  // Adjust the scale factor to stretch horizontally
     
     // Adjust the sprite position to move it to the left
     const spriteOffsetX = -canvas.width / 20; // Move the sprite left by this amount
@@ -300,14 +302,14 @@ function updateNameTagScale(nameTag, camera) {
     const distanceToCamera = camera.position.distanceTo(nameTag.position);
 
     // Definir un tamaño base (ajustable según el tamaño deseado)
-    const baseSize = 1.3; // Ajusta este valor para cambiar el tamaño visual
+    const baseSize = 1.7; // Ajusta este valor para cambiar el tamaño visual
 
     // Ajustar la escala de manera proporcional a la distancia
     const scaleFactor = distanceToCamera * 0.1; // Ajusta este factor si es necesario
 
     const zScaleFactor = 0.5;
 
-    const yScaleFactor = distanceToCamera * 0.05;
+    const yScaleFactor = distanceToCamera * 0.03;
     // Aplicar la escala calculada de manera uniforme en X y Y
     nameTag.scale.set(baseSize * scaleFactor, baseSize * yScaleFactor, zScaleFactor * scaleFactor);  // Mantener un tamaño relativo constante
 }
@@ -516,13 +518,13 @@ const mouse = new THREE.Vector2();
 
 function updateNameTagTexture(sprite, newName) {
    // Limit the new name to 16 characters
-   newName = newName.substring(0, 10);
+   newName = newName.substring(0, 10000);
 
    const canvas = document.createElement('canvas');
    const context = canvas.getContext('2d');
    
    // Define font size and set font
-   const fontSize = 10;
+   const fontSize = 20;
    context.font = `Bold ${fontSize}px Arial`;
    
    // Measure text size
@@ -628,7 +630,7 @@ function onDocumentMouseClick(event) {
 
         const nameTagObject = nameTags.find(nt => nt.sprite === intersectedSprite);
         if (distance < maxGrabDistance) {
-        const newName = prompt('Rename it (max 10 characters):', nameTagObject.mesh.userData.name);
+        const newName = prompt('Rename it :', nameTagObject.mesh.userData.name);
 
         if (newName) {
             nameTagObject.mesh.userData.name = newName;
@@ -637,12 +639,10 @@ function onDocumentMouseClick(event) {
         return;
         }
     }
-    console.log("fumadita1");
     const intersectableMeshes = physicsObjects.map(obj => obj.mesh);
     const objectIntersects = raycaster.intersectObjects(intersectableMeshes, true);
 
     if (objectIntersects.length > 0) {
-        console.log("fumadita");
         if (!grabbedObject) {
             const intersected = objectIntersects[0].object;
             const physicsObject = physicsObjects.find(obj => obj.mesh === intersected);
@@ -669,7 +669,6 @@ function onDocumentMouseClick(event) {
             grabbedObject = null;
             isDragging = false;
 
-            console.log("Objeto soltado");
         }
     }
 }
@@ -943,4 +942,4 @@ animate();
 // Configura un temporizador para recargar la página cada 15 minutos
 setTimeout(function() {
     location.reload(); // Recarga la página para reiniciar el juego
-}, 15 * 60 * 1000);
+}, 25 * 60 * 1000);
