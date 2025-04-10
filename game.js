@@ -201,7 +201,7 @@ loader.load(url, (object) => {
             body.collisionFilterGroup = MAP_COLLISION_GROUP;
             
             world.addBody(body);
-            loaded = true;
+            
             instructions.innerHTML = ' click here to play ';
 
 
@@ -406,6 +406,7 @@ loader.load('piezas/finalrostro.fbx', (object) => {
         addPhysicsObject(child, body);
         nameTags.push({ sprite: nameTag, mesh: child });
     });
+    loaded = true;
 }, undefined, function (error) {
     console.error('An error happened:', error);
 });
