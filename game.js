@@ -11,6 +11,7 @@ const playerHeight = 20;
 const playerRadius = 5;
 let outlineMesh = null;
 let grabConstraint = null;
+let loaded = false;
 let ghostBody = null; // Cuerpo invisible que sigue la cámara
 let convexHull = new THREE.Mesh();
 let mesh;
@@ -200,6 +201,8 @@ loader.load(url, (object) => {
             body.collisionFilterGroup = MAP_COLLISION_GROUP;
             
             world.addBody(body);
+            loaded = true;
+            instructions.innerHTML = ' click here to play ';
 
 
         }
@@ -422,7 +425,7 @@ instructions.style.fontSize = '24px';
 instructions.style.color = 'white';
 instructions.style.fontFamily = 'Arial';
 instructions.style.cursor = 'pointer';
-instructions.innerHTML = ' click here to play ';
+instructions.innerHTML = ' loading...';
 document.body.appendChild(instructions);
 
 const gameInstructions = document.createElement('div');
@@ -447,12 +450,15 @@ gameInstructions.innerHTML = `
 document.body.appendChild(gameInstructions);
 
 instructions.addEventListener('click', function () {
-    controls.lock();
+    if (loaded)
+        controls.lock();
 });
 
 controls.addEventListener('lock', function () {
-    gameInstructions.style.display = '';
-    instructions.style.display = 'none';
+    if (loaded) {
+        gameInstructions.style.display = '';
+        instructions.style.display = 'none';
+    }
 });
 
 controls.addEventListener('unlock', function () {
