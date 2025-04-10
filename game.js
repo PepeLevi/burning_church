@@ -202,7 +202,7 @@ loader.load(url, (object) => {
             
             world.addBody(body);
             
-            instructions.innerHTML = ' click here to play ';
+            
 
 
         }
@@ -407,6 +407,7 @@ loader.load('piezas/finalrostro.fbx', (object) => {
         nameTags.push({ sprite: nameTag, mesh: child });
     });
     loaded = true;
+    instructions.innerHTML = ' click here to play ';
 }, undefined, function (error) {
     console.error('An error happened:', error);
 });
